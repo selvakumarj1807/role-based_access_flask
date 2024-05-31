@@ -1,8 +1,10 @@
 from flask import render_template, url_for, flash, redirect, request
 from app import app, db, bcrypt
-from app.models import User, Role, Permission, RolePermission
 from flask_login import login_user, current_user, logout_user, login_required
 from app.utils import is_superadmin, is_admin, is_user, has_permission
+
+from app.models import User, Role, Permission  # Correctly import Role and Permission
+
 
 @app.route('/', methods=['GET'])
 def index():
@@ -97,3 +99,23 @@ def user():
         pass
 
     return render_template('user.html')
+
+
+@app.route("/admin_dashboard")
+@login_required
+def admin_dashboard():
+    if not current_user.has_permission('view_user'):
+        flash('You do not have permission to access this page.', 'danger')
+        return redirect(url_for('home'))
+    return render_template('admin_dashboard.html')
+
+@app.route("/create_user", methods=['GET', 'POST'])
+@login_required
+def create_user():
+    if not current_user.has_permission('create_user'):
+        flash('You do not have permission to access this page.', 'danger')
+        return redirect(url_for('home'))
+    # Logic for creating a user
+    return render_template('create_user.html')
+
+# Other routes and logic
