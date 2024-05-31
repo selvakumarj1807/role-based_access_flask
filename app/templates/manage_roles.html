@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Roles</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container">
+        <h1>Manage Roles</h1>
+        <form method="POST" action="{{ url_for('manage_roles') }}">
+            <!-- Add your role management code here -->
+            <div class="mb-3">
+                <label for="role" class="form-label">Role</label>
+                <select id="role" name="role_id" class="form-select">
+                    {% for role in roles %}
+                    <option value="{{ role.id }}">{{ role.role_name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="permissions" class="form-label">Permissions</label>
+                <div id="permissions">
+                    {% for permission in permissions %}
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="permissions" value="{{ permission.id }}"
+                            id="permission{{ permission.id }}">
+                        <label class="form-check-label" for="permission{{ permission.id }}">
+                            {{ permission.permission_name }}
+                        </label>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary">Save Changes</button>
+        </form>
+    </div>
+</body>
+
+</html>
